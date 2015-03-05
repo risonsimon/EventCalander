@@ -18,6 +18,10 @@ h4{
 .list-group-item-text{
     color:#985A00;
 }
+.list-group-item{
+    margin-top: 9px;
+    box-shadow: 5px 5px 5px #f0f0f0;
+}
 .hasEvent{
     border-bottom: #ff9800 3px solid;
 }

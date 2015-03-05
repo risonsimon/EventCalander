@@ -1,35 +1,38 @@
-var calenderEvents = [
-    {
-        name: "Product Workshop",
-        description: "Product workshop will help to find more about the product.",
-        startTime : "03/12/2015 11:00 AM",
-        endTime : "03/12/2015 04:00 PM"
-    },
-    {
-        name: "Product Demo",
-        description: "Product demo will help you to understand product features better.",
-        startTime : "03/14/2015 10:00 AM",
-        endTime : "03/14/2015 12:00 PM"
-    },
-    {
-        name: "Product Demo Part 2",
-        description: "Product demo will help you to understand product features better.",
-        startTime : "03/14/2015 02:00 PM",
-        endTime : "03/14/2015 04:00 PM"
-    }
-];
+var todayDate = new Date();
+var settings = {
+    calenderEvents : [
+        {
+            name: "Product Workshop",
+            description: "Product workshop will help to find more about the product.",
+            startTime : "03/12/2015 11:00 AM",
+            endTime : "03/12/2015 04:00 PM"
+        },
+        {
+            name: "Product Demo",
+            description: "Product demo will help you to understand product features better.",
+            startTime : "03/14/2015 10:00 AM",
+            endTime : "03/14/2015 12:00 PM"
+        },
+        {
+            name: "Product Demo Part 2",
+            description: "Product demo will help you to understand product features better.",
+            startTime : "03/14/2015 02:00 PM",
+            endTime : "03/14/2015 04:00 PM"
+        }
+    ],
+    calDays : [],
+    selected : '',
+    currentMonth: todayDate.getMonth()+1,
+    currentYear:todayDate.getFullYear()
+};
 
 var calDay = function (date) {
     this.date = date;
     this.events = [];
 };
-var calDays = [];
 
 // generating calender.
-var todayDate=new Date();
-var currentMonth=todayDate.getMonth()+1; //get current month (1-12)
-var currentYear=todayDate.getFullYear();//get current year
-document.getElementById("calender").innerHTML=buildCal(currentMonth ,currentYear, "daysOfWeek", "days");
+document.getElementById("calender").innerHTML=buildCal(settings.currentMonth ,settings.currentYear, "daysOfWeek", "days");
 
 document.getElementById("calender").addEventListener("click", function (event) {
     if(event.target.tagName === 'TD') {
@@ -37,7 +40,7 @@ document.getElementById("calender").addEventListener("click", function (event) {
         // clear all events.
         document.getElementById("events").innerHTML = '';
         var eventsToAdd = [];
-        $.grep(calDays, function (element) {
+        $.grep(settings.calDays, function (element) {
             if (element.date == parseInt(event.target.textContent, 10) && element.events.length > 0) {
                 eventsToAdd.push(element.events);
             }
@@ -48,7 +51,8 @@ document.getElementById("calender").addEventListener("click", function (event) {
 });
 
 function addListEvents(eventsToAdd){
-    var html = '<div class="list-group">';
+    var html = '<div class="btn btn-danger btn-block">'+new Date(eventsToAdd[0].startTime).toDateString()+'</div>' +
+        '<div class="list-group">';
     $.each(eventsToAdd, function () {
         html += '<div class="list-group-item">'+
         '<h4 class="list-group-item-heading">'+this.name+'</h4>'+
@@ -59,10 +63,6 @@ function addListEvents(eventsToAdd){
     });
     return html+='</div>';
 }
-
-$.each(calenderEvents,function(){
-    $('.calender').append(moment(this.endTime).format('MMMM Do YYYY, h:mm a'));
-});
 
 // Modified script for generating calender from : http://www.dynamicdrive.com/dynamicindex7/basiccalendar.js
 function buildCal(month, year,dayClass, dateClass){
@@ -92,7 +92,7 @@ function buildCal(month, year,dayClass, dateClass){
             continue;
         var day = new calDay(x);
         // Get the events for the clicked date.
-        var eventsToAdd = $.grep(calenderEvents, function (element) {
+        var eventsToAdd = $.grep(settings.calenderEvents, function (element) {
             var startDate = new Date(element.startTime).getDate();
             var startMonth = new Date(element.startTime).getMonth()+1;
             var startYear = new Date(element.startTime).getFullYear();
@@ -110,7 +110,7 @@ function buildCal(month, year,dayClass, dateClass){
         }
         else
             calenderHtml+='<td class="'+dateClass+'">'+x+'</td>';
-        calDays.push(day);
+        settings.calDays.push(day);
         if(((i)%7==0)&&(i<36))
             calenderHtml+='</tr>' +
             '<tr>';
