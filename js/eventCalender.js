@@ -1,4 +1,5 @@
 var todayDate = new Date();
+// Settings object which contains the event list and other common items.
 var settings = {
     calenderEvents : [
         {
@@ -26,30 +27,39 @@ var settings = {
     currentYear:todayDate.getFullYear()
 };
 
+// Constructor for a day. A day can have a date and have events.
 var calDay = function (date) {
     this.date = date;
     this.events = [];
 };
 
-// generating calender.
+// Generating calender.
 document.getElementById("calender").innerHTML=buildCal(settings.currentMonth ,settings.currentYear, "daysOfWeek", "days");
 
+
+// Add click event for all 'td' of table. Made possible by event bubbling. A single
+// event handler is attached to top 'div'.
 document.getElementById("calender").addEventListener("click", function (event) {
+    // Only clicks on 'td' elements are used.
     if(event.target.tagName === 'TD') {
 
         // clear all events.
         document.getElementById("events").innerHTML = '';
         var eventsToAdd = [];
+
+        // Find all events for the current day from the day objects.
         $.grep(settings.calDays, function (element) {
             if (element.date == parseInt(event.target.textContent, 10) && element.events.length > 0) {
                 eventsToAdd.push(element.events);
             }
         });
+        // If events is present for current day, then add them to event list.
         if (eventsToAdd.length > 0)
             document.getElementById("events").innerHTML = addListEvents(eventsToAdd[0]);
     }
 });
 
+// Adds events to the event list in html and returns the html as string.
 function addListEvents(eventsToAdd){
     var html = '<div class="btn btn-danger btn-block">'+new Date(eventsToAdd[0].startTime).toDateString()+'</div>' +
         '<div class="list-group">';
@@ -87,29 +97,29 @@ function buildCal(month, year,dayClass, dateClass){
     '<tr>';
     for(i=1;i<=42;i++){
         if((i-oDate.day>=0)&&(i-oDate.day<numberOfDays[month-1]))
-            var x= i-oDate.day+1;
+            var thisCalDay= i-oDate.day+1;
         else
             continue;
-        var day = new calDay(x);
-        // Get the events for the clicked date.
+        // Create the day object.
+        var day = new calDay(thisCalDay);
+        // Get the events for the date and add them to the day object.
         var eventsToAdd = $.grep(settings.calenderEvents, function (element) {
             var startDate = new Date(element.startTime).getDate();
             var startMonth = new Date(element.startTime).getMonth()+1;
             var startYear = new Date(element.startTime).getFullYear();
-            if(startDate===parseInt(x,10) && startMonth===month && startYear===year){
+            if(startDate===parseInt(thisCalDay,10) && startMonth===month && startYear===year){
                 day.events.push(element);
                 return element;
             }
         });
 
-
-        if (x==scanForToday) //DD added
-            x='<span id="today">'+x+'</span>';//DD added
+        if (thisCalDay==scanForToday)
+            thisCalDay='<span id="today">'+thisCalDay+'</span>';
         if(eventsToAdd.length>0) {
-            calenderHtml += '<td class="' + dateClass + ' hasEvent">' + x + '</td>';
+            calenderHtml += '<td class="' + dateClass + ' hasEvent">' + thisCalDay + '</td>';
         }
         else
-            calenderHtml+='<td class="'+dateClass+'">'+x+'</td>';
+            calenderHtml+='<td class="'+dateClass+'">'+thisCalDay+'</td>';
         settings.calDays.push(day);
         if(((i)%7==0)&&(i<36))
             calenderHtml+='</tr>' +
