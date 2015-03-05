@@ -1,0 +1,24 @@
+h4{
+    font-family: sans-serif;
+}
+.top20{
+    padding-top:20px;
+}
+#today{
+    color:red;
+}
+.calenderTable td:hover{
+    cursor: pointer;
+    background-color: #ff9800;
+    color:#fff;
+}
+.daysOfWeek,.days{
+    text-align: center;
+}
+.list-group-item-text{
+    color:#985A00;
+}
+.hasEvent{
+    border-bottom: #ff9800 3px solid;
+}
+
