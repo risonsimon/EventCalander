@@ -54,31 +54,53 @@ document.getElementById("calender").addEventListener("click", function (event) {
         var eventsToAdd = [];
 
         // Find all events for the current day from the day objects.
-        $.grep(settings.calDays, function (element) {
-            if (element.date == parseInt(event.target.textContent, 10) && element.events.length > 0) {
-                eventsToAdd.push(element.events);
+        for(var i=0,len=settings.calDays.length;i<len;i++){
+            if (settings.calDays[i].date == parseInt(event.target.textContent, 10) && settings.calDays[i].events.length > 0) {
+                eventsToAdd.push(settings.calDays[i].events);
             }
-        });
+        }
+
         // If events is present for current day, then add them to event list.
         if (eventsToAdd.length > 0)
-            document.getElementById("events").innerHTML = addListEvents(eventsToAdd[0]);
+            document.getElementById("events").appendChild(addListEvents(eventsToAdd[0]));
     }
 });
 
 // Adds events to the event list in html and returns the html as string.
 function addListEvents(eventsToAdd){
-    var html = '<div class="btn btn-danger btn-block">'+new Date(eventsToAdd[0].startTime).toDateString()+'</div>' +
-        '<div class="list-group">';
-    $.each(eventsToAdd, function () {
-        html += '<div class="list-group-item">'+
-        '<h4 class="list-group-item-heading">'+this.name+'</h4>'+
-        '<p class="list-group-item-text">'+this.description+'</p>'+
-        '<p><span class="glyphicon glyphicon-time"></span>'+
-        this.startTime.substr(10,9)+
-        ' to '+this.endTime.substr(10,9)+'</p>'+
-        '</div>';
-    });
-    return html+='</div>';
+    var docFragment = document.createDocumentFragment();
+    var monthHeadDiv = document.createElement('div');
+    monthHeadDiv.className = 'btn btn-danger btn-block';
+    var monthHead = new Date(eventsToAdd[0].startTime).toDateString();
+    monthHeadDiv.appendChild(document.createTextNode(monthHead));
+    docFragment.appendChild(monthHeadDiv);
+    var listGroupDiv = document.createElement('div');
+    listGroupDiv.className ='list-group';
+
+
+    for(var i=0,len=eventsToAdd.length;i<len;i++){
+        var listGroupItemDiv = document.createElement('div');
+        listGroupItemDiv.className = 'list-group-item';
+        var listGroupItemHeadH4 = document.createElement('h4');
+        listGroupItemHeadH4.className = 'list-group-item-heading';
+        var listGroupItemText = document.createElement('p');
+        listGroupItemText.className = 'list-group-item-text';
+        var listTimeText = document.createElement('p');
+        var timeIcon = document.createElement('span');
+        timeIcon.className = 'glyphicon glyphicon-time';
+        listTimeText.appendChild(timeIcon);
+        listGroupItemHeadH4.appendChild(document.createTextNode(eventsToAdd[i].name));
+        listGroupItemText.appendChild(document.createTextNode(eventsToAdd[i].description));
+        listTimeText.appendChild(document.createTextNode(eventsToAdd[i].startTime.substr(10,9) +
+            ' to ' + eventsToAdd[i].endTime.substr(10,9)));
+        listGroupItemDiv.appendChild(listGroupItemHeadH4);
+        listGroupItemDiv.appendChild(listGroupItemText);
+        listGroupItemDiv.appendChild(listTimeText);
+        listGroupDiv.appendChild(listGroupItemDiv);
+    }
+    docFragment.appendChild(listGroupDiv);
+
+    return docFragment;
 }
 
 // Modified script for generating calender from : http://www.dynamicdrive.com/dynamicindex7/basiccalendar.js
@@ -110,23 +132,28 @@ function buildCal(month, year,dayClass, dateClass){
         // Create the day object.
         var day = new calDay(thisCalDay);
         // Get the events for the date and add them to the day object.
-        var eventsToAdd = $.grep(settings.calenderEvents, function (element) {
-            var startDate = new Date(element.startTime).getDate();
-            var startMonth = new Date(element.startTime).getMonth()+1;
-            var startYear = new Date(element.startTime).getFullYear();
-            if(startDate===parseInt(thisCalDay,10) && startMonth===month && startYear===year){
-                day.events.push(element);
-                return element;
+        var isEvents = (function () {
+            var eventsPresent = false;
+            for(var i=0,len=settings.calenderEvents.length;i<len;i++){
+                var startDate = new Date(settings.calenderEvents[i].startTime).getDate();
+                var startMonth = new Date(settings.calenderEvents[i].startTime).getMonth()+1;
+                var startYear = new Date(settings.calenderEvents[i].startTime).getFullYear();
+                if(startDate===parseInt(thisCalDay,10) && startMonth===month && startYear===year){
+                    day.events.push(settings.calenderEvents[i]);
+                    eventsPresent = true;
+                }
             }
-        });
+            return eventsPresent;
+        })();
 
         if (thisCalDay==scanForToday)
             thisCalDay='<span id="today">'+thisCalDay+'</span>';
-        if(eventsToAdd.length>0) {
+        if(isEvents) {
             calenderHtml += '<td class="' + dateClass + ' hasEvent">' + thisCalDay + '</td>';
         }
-        else
-            calenderHtml+='<td class="'+dateClass+'">'+thisCalDay+'</td>';
+        else {
+            calenderHtml += '<td class="' + dateClass + '">' + thisCalDay + '</td>';
+        }
         settings.calDays.push(day);
         if(((i)%7==0)&&(i<36))
             calenderHtml+='</tr>' +
