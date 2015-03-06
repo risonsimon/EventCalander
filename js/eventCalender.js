@@ -19,6 +19,12 @@ var settings = {
             description: "Product demo will help you to understand product features better.",
             startTime : "03/14/2015 02:00 PM",
             endTime : "03/14/2015 04:00 PM"
+        },
+        {
+            name: "Product Discussion",
+            description: "Discussion with customers on how to help them more.",
+            startTime : "03/20/2015 10:00 AM",
+            endTime : "03/20/2015 12:00 PM"
         }
     ],
     calDays : [],
@@ -67,8 +73,9 @@ function addListEvents(eventsToAdd){
         html += '<div class="list-group-item">'+
         '<h4 class="list-group-item-heading">'+this.name+'</h4>'+
         '<p class="list-group-item-text">'+this.description+'</p>'+
-        '<p><b>Start Time : </b>'+this.startTime.substr(10,9)+'<br/>'+
-        '<b>End Time : </b>'+this.endTime.substr(10,9)+'</p>'+
+        '<p><span class="glyphicon glyphicon-time"></span>'+
+        this.startTime.substr(10,9)+
+        ' to '+this.endTime.substr(10,9)+'</p>'+
         '</div>';
     });
     return html+='</div>';
