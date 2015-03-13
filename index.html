@@ -46,19 +46,37 @@
 <div class="container">
     <div class="row top30">
         <div class="page-header text-center">
-            <h1><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Event Calander</h1>
-            <br/>
-            <p class="text-primary text-capitalize">View events for the company.</p>
+            <!--<h1><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Event Calander</h1>-->
+            <!--<br/>-->
+            <!--<p class="text-primary text-capitalize">View events for the company.</p>-->
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-lg-4" id="calender">
+        <div class="col-lg-offset-4 col-lg-4 text-center">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default" id="btnMonth">Month View</button>
+                <button type="button" class="btn btn-default" id="btnDay">Day View</button>
+            </div>
         </div>
-        <div class="col-lg-6 col-lg-offset-2" id="events">
+    </div>
+</div>
 
+<div class="container">
+    <div class="row top30">
+        <div class="col-lg-10 col-lg-offset-1" id="calender">
         </div>
+        <!--<div class="col-lg-6 col-lg-offset-2" id="events">-->
+        <!--</div>-->
+    </div>
+</div>
+<div class="container-fluid hide" id="eventDetailWrap">
+    <div class="wrap">
+    <span class="glyphicon glyphicon-remove" id="closeEvent"></span>
+    <div id="eventDetail">
+
+    </div>
     </div>
 </div>
 
