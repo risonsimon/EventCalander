@@ -67,13 +67,14 @@
         selectedDateDay: todayDate.getDate()
     };
 
-// Constructor for a day. A day can have a date and have events.
+    // Constructor for a day. A day can have a date and have events.
     var calDay = function (date,fullDate) {
         this.date = date;
         this.fullDate = fullDate;
         this.events = [];
     };
 
+    // Generate calender objects for days.
     var generateCalDays = function(month, year){
         settings.calDays = [];
         settings.calEventDays = [];
@@ -113,6 +114,7 @@
         }
     };
 
+    // Build daily calender view.
     var buildDayCal = function () {
         var formatAMPM = function (date) {
             var hours = date.getHours();
@@ -228,8 +230,7 @@
         return calenderHtml;
     };
 
-
-
+    // Generate month calender and add events.
     var monthClickFunction = function() {
         var addEventsToView = function (eventsToAdd) {
             var html = '<div class="wrap">';
@@ -259,6 +260,7 @@
         }
     };
 
+    // Generate daily calender and add events.
     var dayClickFunction = function(){
         // generate day objects for the month.
         generateCalDays(settings.selectedMonth, settings.selectedYear);
@@ -266,6 +268,7 @@
         document.getElementById("calender").innerHTML += buildDayCal();
     };
 
+    // Show event details as modal.
     var showEventDetails = function (heading, description, duration) {
         var html = '<h4 class="eventHeading">' +
             heading +
@@ -289,6 +292,7 @@
         event.target.parentNode.parentNode.classList.add('hide');
     });
 
+    // Use event bubbling to attach events to dynamically generated buttons.
     document.getElementById('calender').addEventListener("click", function (event) {
         if(event.target.id === 'btnMonthPrev' || event.target.parentNode.id === 'btnMonthPrev' ) {
             if(settings.selectedMonth == 1) {
