@@ -44,14 +44,20 @@
             {
                 name: "Product Demo Part 4",
                 description: "Product demo will help you to understand product features better.",
-                startTime: "03/14/2015 06:00 PM",
-                endTime: "03/14/2015 07:00 PM"
+                startTime: "03/13/2015 09:00 AM",
+                endTime: "03/13/2015 12:00 PM"
             },
             {
                 name: "Product Discussion",
                 description: "Discussion with customers on how to help them more.",
                 startTime: "03/20/2015 10:00 AM",
                 endTime: "03/20/2015 12:00 PM"
+            },
+            {
+                name: "Product Discussion",
+                description: "Discussion with customers on how to help them more.",
+                startTime: "04/20/2015 10:00 AM",
+                endTime: "04/20/2015 12:00 PM"
             }
         ],
         calDays: [],
@@ -156,7 +162,7 @@
             '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>' +
             '</div>'+
             '<div class="tableDay">' +
-            '<table class="table table-condensed">' ;
+            '<table class="table table-condensed table-striped">' ;
 
         while(dateEnd.getDate()!==dateStart.getDate()){
             html += '<tr class="dateTimeTr">' +
@@ -185,7 +191,7 @@
             '<button type="button" class="btn btn-default" id="btnMonthNext">Next' +
             '<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>' +
             '</div>'+
-            '<table class="calenderTable table">' +
+            '<table class="calenderTable table  table-striped">' +
             '<tr>';
         // To set the top day heading.
         for (s = 0; s < 7; s++)
